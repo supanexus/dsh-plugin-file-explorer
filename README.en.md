@@ -2,7 +2,9 @@
 
 [中文](./README.md) · English
 
-SupaNexus workspace file explorer for DeepSeek Harness: center tree | multi-tab editor; left sidebar keeps the official conversation list.
+Browse and edit workspace files inside DeepSeek Harness: center tree + multi-tab editor; the left sidebar keeps the official conversation list.
+
+Repo: [GitHub](https://github.com/supanexus/dsh-plugin-file-explorer)
 
 ## Install
 
@@ -10,39 +12,35 @@ SupaNexus workspace file explorer for DeepSeek Harness: center tree | multi-tab 
 dsh plugin --profile web add github:supanexus/dsh-plugin-file-explorer#v0.1.0
 ```
 
-Restart `dsh web` (or Desktop Host) after install. Open the printed `?token=` URL.
+Fully restart `dsh web` (or Desktop Host) after install, then open the printed `?token=` URL.
 
-## Features
+## What it does
 
-- Top **Files** conversation tab: center tree | editor split; pins session cwd; does **not** occupy `sidebar.workspaces`
-- Multi-tab editing, dirty marks, Ctrl/Cmd+S
-- Markdown source / preview toggle (`marked`)
-- Create / rename / delete (non-empty directories are rejected)
-- Optional: open conversation file-path links in the editor
-- Monaco via [jsDelivr CDN](https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs); falls back to `<textarea>` on failure or timeout
+- Top **Files** tab: tree | editor split; pins the session working directory
+- Multi-tab editing with dirty marks; save with `Ctrl/Cmd+S`
+- Markdown source / preview toggle
+- Create, rename, delete (non-empty directories are rejected)
+- Optional: open file-path links from the conversation in the editor
+- Monaco via jsDelivr CDN, with `<textarea>` fallback on failure or timeout
 
-## Config
+## How to use
 
-`cordis.patch.yml`:
+1. Open or create a conversation
+2. Switch to the **Files** tab
+3. Browse the tree; open a file to edit
+4. Save with `Ctrl/Cmd+S`
+5. Right-click tree nodes to create / rename / delete
 
-```yaml
-config:
-  root: !!js process.cwd()
-  openLinksInEditor: false
-```
+Appearance (background, font size, saved schemes) is available from the editor toolbar.
 
-Settings → Plugins → **SupaNexus file explorer** hot-updates these fields.
+## Optional config
 
-## Develop / rebuild
+Settings → Plugins → **SupaNexus file explorer** (hot-updates), for example:
 
-Peer `@deepseek-ai/*` packages are not on the public npm registry. Build inside a DeepSeek Harness / `whale-harness-free` engine checkout:
-
-```bash
-pnpm install && pnpm build && pnpm test
-dsh plugin --profile web add "file:/absolute/path/to/dsh-plugin-file-explorer"
-```
-
-Published installs use the committed `lib/` artifacts (no user-side build).
+| Key | Meaning | Default |
+|-----|---------|---------|
+| `root` | Browse root | process working directory |
+| `openLinksInEditor` | Open conversation file links in the editor | `false` |
 
 ## License
 
