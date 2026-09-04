@@ -1,46 +1,40 @@
 # @supanexus/dsh-plugin-file-explorer
 
-SupaNexus workspace file explorer for DeepSeek Harness: center tree | multi-tab editor; left sidebar keeps the official conversation list.
+中文 · [English](./README.en.md)
 
-## Install
+SupaNexus 工作区文件浏览插件：中间列目录树 + 多标签编辑器；左侧保持官方对话列表。
+
+## 安装
 
 ```bash
 dsh plugin --profile web add github:supanexus/dsh-plugin-file-explorer#v0.1.0
 ```
 
-Restart `dsh web` (or Desktop Host) after install. Open the printed `?token=` URL.
+安装后请**完全重启** `dsh web`（或 Desktop Host），并用打印的 `?token=` 地址打开。
 
-## Features
+## 功能
 
-- Top **Files** conversation tab: center tree | editor split; pins session cwd; does **not** occupy `sidebar.workspaces`
-- Multi-tab editing, dirty marks, Ctrl/Cmd+S
-- Markdown source / preview toggle (`marked`)
-- Create / rename / delete (non-empty directories are rejected)
-- Optional: open conversation file-path links in the editor
-- Monaco via [jsDelivr CDN](https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs); falls back to `<textarea>` on failure or timeout
+- 顶部会话 **文件** Tab：中间列为目录树 | 编辑器分栏，并 pin 当前会话 cwd；不占领 `sidebar.workspaces`
+- 多标签编辑、dirty 标记、Ctrl/Cmd+S 保存
+- Markdown 源码 / 预览切换（`marked`）
+- 新建 / 重命名 / 删除（非空目录拒绝）
+- 可选：对话内文件路径链接在编辑器中打开
+- Monaco 经 [jsDelivr CDN](https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs) 加载；失败或超时降级为 `<textarea>`
 
-## Config
+## 配置
 
-`cordis.patch.yml`:
+见 `cordis.patch.yml`；设置 → 插件 → **SupaNexus 文件浏览** 可热更新。
 
-```yaml
-config:
-  root: !!js process.cwd()
-  openLinksInEditor: false
-```
+## 开发 / 重构建
 
-Settings → Plugins → **SupaNexus file explorer** hot-updates these fields.
-
-## Develop / rebuild
-
-Peer `@deepseek-ai/*` packages are not on the public npm registry. Build inside a DeepSeek Harness / `whale-harness-free` engine checkout:
+公开 npm 上没有 `@deepseek-ai/*`。需在 DeepSeek Harness / `whale-harness-free` 的 engine 工作区内构建：
 
 ```bash
 pnpm install && pnpm build && pnpm test
-dsh plugin --profile web add "file:/absolute/path/to/dsh-plugin-file-explorer"
+dsh plugin --profile web add "file:/绝对路径/dsh-plugin-file-explorer"
 ```
 
-Published installs use the committed `lib/` artifacts (no user-side build).
+GitHub 安装使用仓内已提交的 `lib/`，用户侧无需编译。
 
 ## License
 
