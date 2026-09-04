@@ -1,0 +1,10 @@
+# SupaNexus file explorer bundle patch.
+#
+# Host: ExplorerFsService (Typert `explorerFs` RPC).
+# Client: discovered via `dsh.client` + exports["./client"].
+- insert:
+    - id: supanexus-file-explorer
+      name: '@supanexus/dsh-plugin-file-explorer'
+      config:
+        root: !!js process.cwd()
+        openLinksInEditor: false
