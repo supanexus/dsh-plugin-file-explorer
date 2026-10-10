@@ -5,11 +5,6 @@
 import type { Context } from '@deepseek-ai/cordis'
 import { ExplorerFsService } from './host/fs-service.ts'
 import { type Config } from './host/config.ts'
-import {
-  FILE_EXPLORER_NS,
-  FileExplorerSettingsSchema,
-} from './host/settings/schema.ts'
-import type { FileExplorerSettings } from './shared/settings-contract.ts'
 
 export { Config, name, inject } from './host/config.ts'
 
@@ -20,31 +15,17 @@ function defaultRoot(): string {
 }
 
 /**
- * Register Host filesystem RPC and settings namespace.
+ * Register Host filesystem RPC; volatile Config drives the fallback root.
  * @param ctx - Host plugin context.
  * @param config - Cordis row configuration.
  */
 export function apply(ctx: Context, config: Config): void {
-  const initialRoot = config.root.trim() !== '' ? config.root : defaultRoot()
+  const configured = config.root.get().trim()
+  const initialRoot = configured !== '' ? configured : defaultRoot()
   const service = new ExplorerFsService(ctx, initialRoot)
 
-  const base: FileExplorerSettings = {
-    root: initialRoot,
-    openLinksInEditor: config.openLinksInEditor,
-  }
-
-  ctx.inject(['settings'], (settingsCtx) => {
-    const scope = settingsCtx.settings.register(
-      FILE_EXPLORER_NS,
-      FileExplorerSettingsSchema,
-      { base },
-    )
-    service.applySettingsRoot(scope.get().root)
-    settingsCtx.effect(
-      () => scope.watch((next) => {
-        service.applySettingsRoot(next.root)
-      }),
-      'supanexus-file-explorer: settings root',
-    )
+  ctx.on('loader/volatile-update', () => {
+    const next = config.root.get().trim()
+    if (next !== '') service.applySettingsRoot(next)
   })
 }

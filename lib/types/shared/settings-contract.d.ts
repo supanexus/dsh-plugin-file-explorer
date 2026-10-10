@@ -1,6 +1,9 @@
 /** Settings namespace contract visible to both Host and Client. */
-/** Must match Host settingsNamespace pattern /^[a-z][a-z0-9-]*$/. */
-export declare const FILE_EXPLORER_SETTINGS_NS: "file-explorer";
+/**
+ * Profile entry id from `cordis.patch.yml` (`supanexus-file-explorer`).
+ * dsh ≥ 0.1.7 projects volatile Config under this id into `configForms`.
+ */
+export declare const FILE_EXPLORER_SETTINGS_NS: "supanexus-file-explorer";
 export interface FileExplorerSettings {
     /** Fallback workspace root before a session cwd pin. */
     readonly root: string;

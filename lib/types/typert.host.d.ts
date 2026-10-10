@@ -31,13 +31,13 @@ export declare const TYPERT: {
             codec: {
                 mode: "strict";
                 typeSymbol: string;
-                schema: z.ZodString;
+                create: () => z.ZodString;
             };
         }[];
         result: {
             mode: "strict";
             typeSymbol: string;
-            schema: z.ZodType<any, z.ZodTypeDef, any>;
+            create: () => z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>;
         };
         sourceLocation: {
             file: string;

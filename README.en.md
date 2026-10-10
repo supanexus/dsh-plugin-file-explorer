@@ -9,7 +9,7 @@ Repo: [GitHub](https://github.com/supanexus/dsh-plugin-file-explorer)
 ## Install
 
 ```bash
-dsh plugin --profile web add github:supanexus/dsh-plugin-file-explorer#v0.1.0
+dsh plugin --profile web add github:supanexus/dsh-plugin-file-explorer#v0.1.1
 ```
 
 Fully restart `dsh web` (or Desktop Host) after install, then open the printed `?token=` URL.

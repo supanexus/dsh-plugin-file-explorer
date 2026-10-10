@@ -5,7 +5,7 @@ import type { Context } from '@deepseek-ai/cordis';
 import { type Config } from './host/config.ts';
 export { Config, name, inject } from './host/config.ts';
 /**
- * Register Host filesystem RPC and settings namespace.
+ * Register Host filesystem RPC; volatile Config drives the fallback root.
  * @param ctx - Host plugin context.
  * @param config - Cordis row configuration.
  */

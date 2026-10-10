@@ -53,7 +53,7 @@ function strParam(name: string) {
     codec: {
       mode: 'strict' as const,
       typeSymbol: `${PKG}/types#String`,
-      schema: Str,
+      create: () => Str,
     },
   }
 }
@@ -62,7 +62,7 @@ function resultCodec(schema: z.ZodType, typeSymbol: string) {
   return {
     mode: 'strict' as const,
     typeSymbol: `${PKG}/types#${typeSymbol}`,
-    schema,
+    create: () => schema,
   }
 }
 

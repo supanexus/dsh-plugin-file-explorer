@@ -15,6 +15,7 @@ import {
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type { ExplorerApi } from '../rpc.ts'
 import type { FsEntry } from '../../shared/rpc-contract.ts'
+import { subscribeRootPinned } from '../root-events.ts'
 import type { TabsStore } from '../state/tabs.ts'
 import { useExplorerT } from '../use-explorer-t.ts'
 import { InlineNameInput } from './InlineNameInput.tsx'
@@ -110,6 +111,10 @@ function ExplorerPanelInner(props: ExplorerPanelProps): ReactElement {
   useEffect(() => {
     void reload()
   }, [reload, refreshToken])
+
+  useEffect(() => subscribeRootPinned(() => {
+    setRefreshToken((n) => n + 1)
+  }), [])
 
   const bump = (): void => {
     setRefreshToken((n) => n + 1)

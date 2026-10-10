@@ -1,13 +1,11 @@
-/** Host settings namespace for the file explorer plugin card. */
+/** Host settings helpers retained for tests (volatile Config is the source of truth). */
 import type { Context } from '@deepseek-ai/cordis';
-import z from '@deepseek-ai/schemastery';
-import { type FileExplorerSettings } from '../../shared/settings-contract.ts';
-export declare const FILE_EXPLORER_NS: import("@deepseek-ai/dsh-settings").SettingsNamespace;
-export declare const FileExplorerSettingsSchema: z<FileExplorerSettings>;
+import type { FileExplorerSettings } from '../../shared/settings-contract.ts';
+/** @deprecated Prefer profile entry id {@link FILE_EXPLORER_SETTINGS_NS}. */
+export declare const FILE_EXPLORER_NS: "supanexus-file-explorer";
 /**
- * Register the `file-explorer` settings section (standalone helper for tests).
- * @param ctx - Host context with `settings`.
- * @param base - initial values (typically from Cordis Config).
+ * No-op placeholder: dsh ≥ 0.1.7 projects volatile Config automatically.
+ * Kept so older tests that imported the helper still compile.
  */
-export declare function registerExplorerSettings(ctx: Context, base?: FileExplorerSettings): ReturnType<Context['settings']['register']>;
+export declare function registerExplorerSettings(_ctx: Context, _base?: FileExplorerSettings): () => void;
 //# sourceMappingURL=schema.d.ts.map

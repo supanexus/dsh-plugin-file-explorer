@@ -2,7 +2,7 @@
  * Capture clicks on conversation file-looking links and open them in the editor.
  */
 
-import type { SettingsScope } from '@deepseek-ai/dsh-client-ui-settings/client'
+import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { FileExplorerSettings } from '../shared/settings-contract.ts'
 import { requestOpenPath } from './editor/EditorSurface.tsx'
 
@@ -32,7 +32,7 @@ function candidateFromAnchor(anchor: HTMLAnchorElement): string | null {
  * @returns disposer.
  */
 export function installOpenLinksInterceptor(
-  scope: SettingsScope<FileExplorerSettings>,
+  scope: ConfigForm<FileExplorerSettings>,
 ): () => void {
   const onClick = (event: MouseEvent): void => {
     const snap = scope.getSnapshot()

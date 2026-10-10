@@ -16,12 +16,15 @@ import {
 } from 'react'
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-api-remotes/client'
+import type {} from '@deepseek-ai/dsh-api-session-controller/client'
 import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 import type {} from '@deepseek-ai/dsh-client-ui-sidebar/client'
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
+import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type { SettingsScope } from '@deepseek-ai/dsh-client-ui-settings/client'
+import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import {
   FILE_EXPLORER_SETTINGS_NS,
   type FileExplorerSettings,
@@ -50,7 +53,7 @@ export const inject = [
   'remote',
   'locale',
   'connection',
-  'settingsScope',
+  'configForms',
 ]
 
 /**
@@ -63,9 +66,7 @@ export async function apply(ctx: ClientContext): Promise<void> {
 
   ctx.effect(() => ctx.locale.register(NS, dictionaries), 'supanexus-file-explorer: dictionaries')
 
-  const settings = ctx.settingsScope.bind<FileExplorerSettings>({
-    namespace: FILE_EXPLORER_SETTINGS_NS,
-  })
+  const settings = ctx.configForms.get<FileExplorerSettings>(FILE_EXPLORER_SETTINGS_NS)
 
   const tabs = new TabsStore()
   const buffers = new BuffersStore()
@@ -80,7 +81,7 @@ export async function apply(ctx: ClientContext): Promise<void> {
       'supanexus-file-explorer: open-links',
     )
 
-    remoteCtx.inject(['sessions'], (sessionCtx) => {
+    remoteCtx.inject(['sessions', 'uiSession'], (sessionCtx) => {
       sessionCtx.effect(
         () => installSessionRootPin(sessionCtx, api, mode),
         'supanexus-file-explorer: session-pin',
@@ -149,17 +150,21 @@ export async function apply(ctx: ClientContext): Promise<void> {
       />
     )))
 
-    remoteCtx.slots.inject('settings.plugin.item', () => remoteCtx.slots.register({
-      name: 'settings.plugin.item',
-      key: FILE_EXPLORER_SETTINGS_NS,
+    const t = remoteCtx.locale.bind(NS)
+    remoteCtx.effect(() => remoteCtx.configForms.whileServed([FILE_EXPLORER_SETTINGS_NS], () => remoteCtx.slots.inject('plugins.item', () => remoteCtx.slots.register({
+      name: 'plugins.item',
+      id: 'file-explorer',
+      order: 45,
+      label: () => t('settingsTitle'),
+      locale: NS,
       registrant: PACKAGE,
     }, (props) => (
       <ExplorerSettingsCard
         ctx={remoteCtx}
-        scope={settings as SettingsScope<FileExplorerSettings>}
+        scope={settings as ConfigForm<FileExplorerSettings>}
         {...props}
       />
-    )))
+    )))), 'supanexus-file-explorer: plugins.item')
   })
 }
 
